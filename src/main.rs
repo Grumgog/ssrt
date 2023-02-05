@@ -26,10 +26,10 @@ fn main() {
     let args = Args::parse();
 
     let file_content = fs::read_to_string(args.input_file)
-        .expect("Программа должна иметь возможность прочитать файл");
+        .expect("Can't read input file.");
 
     let mut output_file = fs::File::create(args.output_file)
-        .expect("Программа должна иметь возможность открыть файл для записи");
+        .expect("Can't create output file.");
 
     let file_raw_block = file_content.split("\r\n\r\n");
 
@@ -39,7 +39,7 @@ fn main() {
             r.shift_timestamps(args.shift);
             output_file
                 .write(format!("{}\r\n", r.to_str()).to_string().as_bytes())
-                .expect("Не возможно записать выходные данные");
+                .expect("Can't write output data.");
         }
     }
 }

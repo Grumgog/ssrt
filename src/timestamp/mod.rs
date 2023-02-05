@@ -5,12 +5,14 @@ pub struct Timestamp {
 }
 
 impl Timestamp {
+    /// Convert milliseconds to timestamp.
     pub fn from_milliseconds(ms: i64) -> Timestamp {
         Timestamp {
             time_milliseconds: ms,
         }
     }
 
+    /// Convert timestamp to string presentation as HH:mm:ss,SSS format.
     pub fn to_string(&self) -> String {
         let mut total = self.time_milliseconds;
         let milliseconds = total % 1000;
@@ -35,6 +37,7 @@ impl Timestamp {
         )
     }
 
+    /// Shift timestamp with adding `ms`.
     pub fn shift(&mut self, ms: i64) {
         self.time_milliseconds = self.time_milliseconds + ms;
     }
@@ -44,9 +47,9 @@ impl FromStr for Timestamp {
     // parse timestamp from HH:mm:ss,SSS format
     fn from_str(s: &str) -> Result<Timestamp, ()> {
         let parts: Vec<&str> = s.split([':', ',']).collect();
-        let hours = parts[0].parse::<i64>().unwrap();
-        let minuts = parts[1].parse::<i64>().unwrap() + hours * 60;
-        let seconds = parts[2].parse::<i64>().unwrap() + minuts * 60;
+        let hours = parts[0].parse::<i64>().expect("Can't parse hours");
+        let minuts = parts[1].parse::<i64>().expect("Cant parse minuts") + hours * 60;
+        let seconds = parts[2].parse::<i64>().expect("Can't parse seconds") + minuts * 60;
         let milliseconds = parts[3].parse::<i64>().unwrap() + seconds * 1000;
         Result::Ok(Timestamp {
             time_milliseconds: milliseconds,
